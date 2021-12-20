@@ -24,31 +24,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// class NestedLink extends Component {
-//   render() {
-//     return <h1>hello</h1>;
-//   }
-// }
-// function NestedLink({ children }) {
-//   return <Route render={({ history }) => ({ children })} />;
-// }
-// function myLink(props) {
-//   return (
-//     <Route
-//       render={({ history }) => (
-//         <Button
-//           color="inherit"
-//           type="button"
-//           onClick={() => {
-//             history.push("/signin");
-//           }}
-//         >
-//           Login
-//         </Button>
-//       )}
-//     />
-//   );
-// }
 function Header(props) {
   const classes = useStyles();
 

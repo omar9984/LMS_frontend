@@ -13,6 +13,9 @@ axios.defaults.headers.post["Content-Type"] =
 export function signUserIn(data) {
   return function (dispatch) {
     // Submit email/password to server
+    console.log("now signUserIn");
+    dispatch({ type: AUTH_USER });
+    return;
     axios
       .post(`/signin`, data)
       .then((res) => {
@@ -32,8 +35,7 @@ export function signUserIn(data) {
 export function signUserUp(userObj) {
   return function (dispatch) {
     // Submit email/password to server
-    dispatch({ type: AUTH_USER });
-    return;
+
     axios
       .post(`/signup`, userObj)
       .then((res) => {
