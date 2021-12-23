@@ -14,16 +14,15 @@ export function signUserIn(data) {
   return function (dispatch) {
     // Submit email/password to server
     console.log("now signUserIn");
-    dispatch({ type: AUTH_USER });
-    return;
+
     axios
-      .post(`/signin`, data)
+      .post(`/login`, data)
       .then((res) => {
         dispatch({ type: AUTH_USER });
-        localStorage.setItem("auth_jwt_token", res.data.token);
-        window.location = "/#account";
+        localStorage.setItem("auth_jwt_token", "Bearer " + res.data.token);
         axios.defaults.headers.common["Authorization"] =
-          localStorage.getItem("auth_jwt_token");
+          "Bearer " + localStorage.getItem("auth_jwt_token");
+        window.location = "/";
       })
       .catch((error) => {
         console.log(error);

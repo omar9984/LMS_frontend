@@ -1,33 +1,60 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import RestoreIcon from "@material-ui/icons/Restore";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-
-const useStyles = makeStyles({
+import MediaCard from "./cards/MediaCard";
+import axios from "axios";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+const useStyles = makeStyles((theme) => ({
   root: {
-    width: 500,
+    flexGrow: 1,
   },
-});
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
+}));
 
-export default function App() {
+export default function Home() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
+  const [profile, setProfile] = React.useState({});
+  const [courses, setcourses] = React.useState([]);
+  useEffect(() => {
+    axios
+      .get(`/user/profile`, {
+        headers: {
+          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+        },
+      })
+      .then((r) => {
+        setProfile(r.data);
+      });
+  }, []);
   return (
-    <BottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-      showLabels
-      className={classes.root}
-    >
-      <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-      <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-    </BottomNavigation>
+    <div>
+      {profile && <h1>hello {profile.firstName}</h1>}
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={6} sm={3}>
+            <MediaCard />
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <MediaCard />
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <MediaCard />
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <MediaCard />
+          </Grid>
+        </Grid>
+      </div>
+    </div>
   );
 }

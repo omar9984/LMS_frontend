@@ -3,7 +3,7 @@ import { Route } from "react-router-dom";
 
 import { connect } from "react-redux";
 import * as actions from "../actions";
-import { NavLink } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,7 +11,10 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-
+import Avatar from "@material-ui/core/Avatar";
+import { deepOrange, deepPurple } from "@material-ui/core/colors";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -22,42 +25,117 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  orange: {
+    "&:hover": {
+      background: "#f00",
+      border: "2px solid black",
+    },
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+  },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
+  },
 }));
 
 function Header(props) {
   const classes = useStyles();
+  const [auth, setAuth] = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
+  const handleChange = (event) => {
+    setAuth(event.target.checked);
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          <MenuIcon
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
           >
-            <MenuIcon />
-          </IconButton>
+            <IconButton />
+          </MenuIcon>
           <Typography variant="h6" className={classes.title}>
-            News
+            LMS
           </Typography>
 
           {props.authenticated ? (
             <Fragment>
-              <Route
-                render={({ history }) => (
-                  <Button
-                    color="inherit"
-                    type="button"
-                    onClick={() => {
-                      history.push("/signout");
-                    }}
-                  >
-                    Logout
-                  </Button>
-                )}
-              />
+              <Avatar
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                className={classes.orange}
+              >
+                {"Islam"[0]}
+              </Avatar>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <Route
+                  render={({ history }) => (
+                    <MenuItem
+                      color="inherit"
+                      onClick={() => {
+                        history.push("/");
+                      }}
+                    >
+                      home
+                    </MenuItem>
+                  )}
+                />
+                <Route
+                  render={({ history }) => (
+                    <MenuItem
+                      color="inherit"
+                      onClick={() => {
+                        history.push("/account");
+                      }}
+                    >
+                      profile
+                    </MenuItem>
+                  )}
+                />
+
+                <Route
+                  render={({ history }) => (
+                    <MenuItem
+                      color="inherit"
+                      onClick={() => {
+                        history.push("/signout");
+                      }}
+                    >
+                      Logout
+                    </MenuItem>
+                  )}
+                />
+              </Menu>
             </Fragment>
           ) : (
             <Fragment>
@@ -68,6 +146,7 @@ function Header(props) {
                     type="button"
                     onClick={() => {
                       history.push("/signin");
+                      setAnchorEl(null);
                     }}
                   >
                     Login
@@ -81,6 +160,7 @@ function Header(props) {
                     type="button"
                     onClick={() => {
                       history.push("/signup");
+                      setAnchorEl(null);
                     }}
                   >
                     Sign Up
