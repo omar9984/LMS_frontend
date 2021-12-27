@@ -5,7 +5,7 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import RestoreIcon from "@material-ui/icons/Restore";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-import MediaCard from "../cards/MediaCard";
+import CourseCard from "../cards/CourseCard";
 import axios from "axios";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -28,27 +28,45 @@ export default function InstructorHome() {
   const [courses, setCourses] = React.useState([]);
 
   useEffect(() => {
-    axios
-      .get(`/user/profile`, {
-        headers: {
-          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
-        },
-      })
-      .then((r) => {
-        setProfile(r.data);
-      });
-    setCourses(tempCourses);
+    (async () => {
+      try {
+        let r = await axios.get(`/user/profile`, {
+          headers: {
+            Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+          },
+        });
+
+        await setProfile(r.data);
+        // console.log("profile ", r.data);
+        let courses_response = await axios.get(`/course/get_many`, {
+          params: {
+            ids: r.data.courses.join(","),
+          },
+
+          headers: {
+            Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+          },
+        });
+
+        setCourses(courses_response.data);
+        console.log(courses_response.data);
+        console.log("hello async");
+      } catch (error) {
+        console.log(error);
+        console.log("couldn't connect to backend  ");
+      }
+    })();
   }, []);
   return (
     <div>
-    <h1>instructor</h1>
+      <h1>instructor</h1>
       {profile && <h1>hello {profile.firstName}</h1>}
       <div className={classes.root}>
         <Grid container spacing={3}>
-          {courses.map((course) => {
+          {courses.map((course, index) => {
             return (
               <Grid item xs={6} sm={3}>
-                <MediaCard id={course.id} key={course.id} />
+                <CourseCard course={course} id={course.id} key={index} />
               </Grid>
             );
           })}

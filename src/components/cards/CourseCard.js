@@ -15,7 +15,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ImgMediaCard({ id }) {
+export default function CourseCard({ course }) {
+  const { _id, name } = course;
   const classes = useStyles();
 
   return (
@@ -30,7 +31,7 @@ export default function ImgMediaCard({ id }) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {Lizard}
+            {name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             Lizards are a widespread group of squamate reptiles, with over 6,000
@@ -45,10 +46,10 @@ export default function ImgMediaCard({ id }) {
               size="small"
               color="primary"
               onClick={() => {
-                history.push("/course/" + id);
+                history.push("/course/" + _id);
               }}
             >
-              home
+              View
             </Button>
           )}
         />
