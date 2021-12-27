@@ -1,54 +1,147 @@
-import React from "react";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import { useParams } from "react-router-dom";
-const useStyles = makeStyles({
-  root: {
-    minWidth: 245,
-  },
-});
+import Axios from "axios";
 
-export default function Course() {
-  const classes = useStyles();
-  const { id } = useParams();
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
   return (
-    <div>
-      <h1>good morning id {id}</h1>
-      <Card className={classes.root}>
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            alt="Contemplative Reptile"
-            height="140"
-            image="/statics/laptop.jpg"
-            title="Contemplative Reptile"
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`nav-tabpanel-${index}`}
+      aria-labelledby={`nav-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `nav-tab-${index}`,
+    "aria-controls": `nav-tabpanel-${index}`,
+  };
+}
+
+function LinkTab(props) {
+  return (
+    <Tab
+      component="a"
+      onClick={(event) => {
+        event.preventDefault();
+      }}
+      {...props}
+    />
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    width: "100%",
+    backgroundColor: theme.palette.background.paper,
+  },
+  tabButton: {
+    "&:hover": {
+      color: "#e040fb",
+      textDecoration: "none",
+    },
+  },
+}));
+
+export default function Course() {
+  const { id } = useParams();
+  console.log(id);
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const [course, setCourse] = React.useState({});
+  const [people, setPeople] = React.useState({});
+  const [QA, setQA] = React.useState({});
+  const [activities, setActivities] = React.useState({});
+
+  useEffect(() => {
+    (async () => {
+      // get the courses and set the courses variable
+      let course_response = await Axios.get("/course/get/" + id, {
+        headers: {
+          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+        },
+      });
+      let course = course_response.data;
+      setCourse(course);
+      console.log("course is ", course_response);
+      // get all the studs registered in the course
+
+      // get all the Questions in the course
+    })();
+  }, []);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Tabs
+          variant="fullWidth"
+          value={value}
+          onChange={handleChange}
+          aria-label="nav tabs example"
+        >
+          <LinkTab
+            className={classes.tabButton}
+            label="Activities"
+            href="/drafts"
+            {...a11yProps(0)}
           />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              Electronic course
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          <Button size="small" color="primary">
-            View
-          </Button>
-          <Button size="small" color="primary">
-            UnEnroll
-          </Button>
-        </CardActions>
-      </Card>
+          <LinkTab
+            className={classes.tabButton}
+            label="QA"
+            href="/trash"
+            {...a11yProps(1)}
+          />
+          <LinkTab
+            className={classes.tabButton}
+            label="People"
+            href="/spam"
+            {...a11yProps(2)}
+          />
+        </Tabs>
+      </AppBar>
+      {/* this is the Activities Tab */}
+      <TabPanel value={value} index={0}>
+        Page One
+      </TabPanel>
+      {/* this is the QA Tab */}
+
+      <TabPanel value={value} index={1}>
+        Page Two
+      </TabPanel>
+
+      {/* this is the People's Tab */}
+      <TabPanel value={value} index={2}>
+        Page Three
+      </TabPanel>
     </div>
   );
 }
