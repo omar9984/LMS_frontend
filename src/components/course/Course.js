@@ -6,6 +6,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import PeopleTab from "./PeopleTab";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
 
@@ -75,7 +76,7 @@ export default function Course() {
   const [value, setValue] = React.useState(0);
 
   const [course, setCourse] = React.useState({});
-  const [people, setPeople] = React.useState({});
+  const [people, setPeople] = React.useState({ learners: [] });
   const [QA, setQA] = React.useState({});
   const [activities, setActivities] = React.useState({});
 
@@ -91,6 +92,19 @@ export default function Course() {
       setCourse(course);
       console.log("course is ", course_response);
       // get all the studs registered in the course
+      if (course.learners.length > 0) {
+        let learners_respons = await Axios.get("/learner/get_many/", {
+          params: {
+            ids: course.learners.join(","),
+          },
+          headers: {
+            Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+          },
+        });
+        let learners = learners_respons.data;
+        console.log(learners);
+        setPeople({ ...people, learners: learners });
+      }
 
       // get all the Questions in the course
     })();
@@ -140,7 +154,7 @@ export default function Course() {
 
       {/* this is the People's Tab */}
       <TabPanel value={value} index={2}>
-        Page Three
+        <PeopleTab people={people} />
       </TabPanel>
     </div>
   );

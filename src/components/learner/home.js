@@ -9,7 +9,6 @@ import MediaCard from "../cards/MediaCard";
 import axios from "axios";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -41,7 +40,7 @@ export default function LearnerHome() {
   }, []);
   return (
     <div>
-    <h1>learner</h1>
+      <h1>learner</h1>
       {profile && <h1>hello {profile.firstName}</h1>}
       <div className={classes.root}>
         <Grid container spacing={3}>

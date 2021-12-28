@@ -237,6 +237,7 @@ function Header(props) {
 //   }
 
 function mapStateToProps({ auth }) {
+  // console.log("auth is ", auth);
   return {
     authenticated: auth.authenticated,
   };
