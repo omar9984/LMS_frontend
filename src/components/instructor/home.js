@@ -143,7 +143,12 @@ export default function InstructorHome() {
           {courses.map((course, index) => {
             return (
               <Grid item xs={12} sm={6} md={4} spacing={3}>
-                <CourseCard course={course} id={course.id} key={index} />
+                <CourseCard
+                  profile={profile}
+                  course={course}
+                  id={course.id}
+                  key={index}
+                />
               </Grid>
             );
           })}

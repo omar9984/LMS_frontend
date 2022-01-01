@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CourseCard({ course }) {
+export default function CourseCard({ profile, course }) {
   const { _id, name } = course;
   const classes = useStyles();
 
@@ -53,10 +53,15 @@ export default function CourseCard({ course }) {
             </Button>
           )}
         />
-
-        <Button size="small" color="primary">
-          UnEnroll
-        </Button>
+        {profile.type.toLowerCase() == "instructor" ? (
+          <Button size="small" color="primary">
+            remove
+          </Button>
+        ) : (
+          <Button size="small" color="primary">
+            UnEnroll
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
