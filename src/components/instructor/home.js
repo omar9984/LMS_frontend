@@ -62,12 +62,39 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function InstructorHome() {
   const classes = useStyles();
   const [txtErrorMessage, settxtErrorMessage] = React.useState("");
-  const [txtError, settxtError] = React.useState("");
+  // const [txtError, settxtError] = React.useState("");
   const [profile, setProfile] = React.useState({});
   const [courses, setCourses] = React.useState([]);
   // Dialog
   const [open, setOpen] = React.useState(false);
+  const fetchCourses = async () => {
+    try {
+      let r = await axios.get(`/user/profile`, {
+        headers: {
+          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+        },
+      });
 
+      await setProfile(r.data);
+      // console.log("profile ", r.data);
+      let courses_response = await axios.get(`/course/get_many`, {
+        params: {
+          ids: r.data.courses.join(","),
+        },
+
+        headers: {
+          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+        },
+      });
+
+      setCourses(courses_response.data);
+      console.log(courses_response.data);
+      console.log("hello async");
+    } catch (error) {
+      console.log(error);
+      console.log("couldn't connect to backend");
+    }
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -76,34 +103,7 @@ export default function InstructorHome() {
     setOpen(false);
   };
   useEffect(() => {
-    (async () => {
-      try {
-        let r = await axios.get(`/user/profile`, {
-          headers: {
-            Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
-          },
-        });
-
-        await setProfile(r.data);
-        // console.log("profile ", r.data);
-        let courses_response = await axios.get(`/course/get_many`, {
-          params: {
-            ids: r.data.courses.join(","),
-          },
-
-          headers: {
-            Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
-          },
-        });
-
-        setCourses(courses_response.data);
-        console.log(courses_response.data);
-        console.log("hello async");
-      } catch (error) {
-        console.log(error);
-        console.log("couldn't connect to backend");
-      }
-    })();
+    fetchCourses();
   }, []);
 
   const add_course = async () => {
@@ -121,9 +121,14 @@ export default function InstructorHome() {
         }
       );
       console.log("response to create is ", r.data);
+
+      settxtErrorMessage("");
+      fetchCourses();
+      setOpen(false);
     } catch (error) {
       console.log(error);
       settxtErrorMessage("this name already exists");
+
       // document.getElementById("txtName").error = true;
     }
     console.log("mido ", txtNameElement.value);
@@ -189,8 +194,8 @@ export default function InstructorHome() {
               label="Course Name (unique)"
               defaultValue="computer-systems-123"
               variant="outlined"
-              error={txtError === "error"}
-              helperText={txtError === "error" ? txtErrorMessage : " "}
+              error={txtErrorMessage !== ""}
+              helperText={txtErrorMessage !== "" ? txtErrorMessage : " "}
             />
           </Grid>
         </Grid>
