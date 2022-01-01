@@ -60,14 +60,14 @@ function Header(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <MenuIcon
+          {/* <MenuIcon
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
           >
             <IconButton />
-          </MenuIcon>
+          </MenuIcon> */}
           <Typography variant="h6" className={classes.title}>
             LMS
           </Typography>

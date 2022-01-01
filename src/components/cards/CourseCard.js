@@ -8,6 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Route } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -15,10 +16,33 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CourseCard({ profile, course }) {
+export default function CourseCard({ profile, course, onUpdate }) {
   const { _id, name } = course;
   const classes = useStyles();
-
+  if (!onUpdate) {
+    onUpdate = () => {};
+  }
+  const remove_course = async () => {
+    console.log("remove a course", localStorage.getItem("auth_jwt_token"));
+    try {
+      let url = `/learner/leave_course/${_id}`;
+      if (profile.type.toLowerCase() == "instructor") {
+        url = `/instructor/remove_course/${_id}`;
+      }
+      let r = await axios.put(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+          },
+        }
+      );
+      onUpdate();
+    } catch (error) {
+      console.log("error occured", error);
+    }
+  };
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -54,11 +78,11 @@ export default function CourseCard({ profile, course }) {
           )}
         />
         {profile.type.toLowerCase() == "instructor" ? (
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={remove_course}>
             remove
           </Button>
         ) : (
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={remove_course}>
             UnEnroll
           </Button>
         )}

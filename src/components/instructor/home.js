@@ -24,7 +24,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
-
+import Tooltip from "@material-ui/core/Tooltip";
 import { TextField } from "@material-ui/core";
 import warning from "react-redux/lib/utils/warning";
 import Axios from "axios";
@@ -68,6 +68,7 @@ export default function InstructorHome() {
   // Dialog
   const [open, setOpen] = React.useState(false);
   const fetchCourses = async () => {
+    console.log("fetch course called");
     try {
       let r = await axios.get(`/user/profile`, {
         headers: {
@@ -144,6 +145,7 @@ export default function InstructorHome() {
             return (
               <Grid item xs={12} sm={6} md={4} spacing={3}>
                 <CourseCard
+                  onUpdate={fetchCourses}
                   profile={profile}
                   course={course}
                   id={course.id}
@@ -205,14 +207,17 @@ export default function InstructorHome() {
           </Grid>
         </Grid>
       </Dialog>
-      <Fab
-        onClick={handleClickOpen}
-        className={classes.floatingFab}
-        color="primary"
-        aria-label="add"
-      >
-        <AddIcon />
-      </Fab>
+
+      <Tooltip title="add new course">
+        <Fab
+          onClick={handleClickOpen}
+          className={classes.floatingFab}
+          color="primary"
+          aria-label="add"
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
     </div>
   );
 }
