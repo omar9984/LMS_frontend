@@ -23,6 +23,7 @@ export default function CourseCard({ profile, course, onUpdate }) {
     onUpdate = () => {};
   }
   const remove_course = async () => {
+    // TODO courses aren't removed login with instructor omar@test.com to check that
     console.log("remove a course", localStorage.getItem("auth_jwt_token"));
     try {
       let url = `/learner/leave_course/${_id}`;

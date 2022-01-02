@@ -77,20 +77,24 @@ export default function InstructorHome() {
       });
 
       await setProfile(r.data);
-      // console.log("profile ", r.data);
-      let courses_response = await axios.get(`/course/get_many`, {
-        params: {
-          ids: r.data.courses.join(","),
-        },
+      console.log("profile ", r.data);
+      if (r.data.courses.length != 0) {
+        let courses_response = await axios.get(`/course/get_many`, {
+          params: {
+            ids: r.data.courses.join(","),
+          },
 
-        headers: {
-          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
-        },
-      });
+          headers: {
+            Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+          },
+        });
 
-      setCourses(courses_response.data);
-      console.log(courses_response.data);
-      console.log("hello async");
+        setCourses(courses_response.data);
+        console.log(courses_response.data);
+        console.log("hello async");
+      } else {
+        setCourses([]);
+      }
     } catch (error) {
       console.log(error);
       console.log("couldn't connect to backend");
