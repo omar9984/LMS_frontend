@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const temp_questions = [
   {
-    title: "hello",
-    description: "hello description",
+    title: "maths questions ? ",
+    description: "please tell me what is the value of pi ?",
     responses: [],
   },
 ];
