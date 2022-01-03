@@ -37,35 +37,72 @@ export default function Question({ question }) {
 
   return (
     <Grid
-      style={{ background: "orange", padding: "10px", marginTop: "10px" }}
+      style={{
+        boxShadow: "0px 0px 3px 3px rgba(12,59,255,0.99)",
+
+        padding: "10px",
+        marginTop: "10px",
+      }}
       xs={12}
       container
       direction="column"
       justifyContent="center"
       alignItems="center"
     >
-      <div>{question.title}</div>
-      <div>{question.description}</div>
-      <TextField
-        fullWidth
-        id="txtResponse"
-        label="response"
-        placeholder="enter your response"
-        variant="filled"
-      />
-      <Grid xs={8}>
-        <TextField
-          fullWidth
-          id="txtResponse"
-          label="response"
-          placeholder="enter your response"
-          variant="filled"
-        />
-      </Grid>
-      <Grid xs={2}>
-        <Button fullWidth variant="outlined">
-          add
-        </Button>
+      <div style={{ width: "100%", marginTop: "10px", marginBottom: "10px" }}>
+        <div
+          style={{
+            fontSize: "1.2em",
+            marginBottom: "5px",
+            borderBottom: "1px solid black",
+          }}
+        >
+          {question.title}
+        </div>
+
+        <div
+          style={{
+            minHeight: "6em",
+            marginBottom: "5px",
+            borderBottom: "1px solid black",
+          }}
+        >
+          {question.description}
+        </div>
+      </div>
+
+      <Grid container>
+        <Grid xs={12} md={8}>
+          <TextField
+            fullWidth
+            id="txtResponse"
+            label="response"
+            placeholder="enter your response"
+            variant="filled"
+          />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            fullWidth
+            onClick={() => {
+              console.log("add reply");
+            }}
+            style={{ height: "3.8em" }}
+            color="secondary"
+            variant="outlined"
+          >
+            add
+          </Button>
+        </Grid>
       </Grid>
 
       <List className={classes.response}>

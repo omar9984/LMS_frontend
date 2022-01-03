@@ -32,7 +32,7 @@ const temp_questions = [
   {
     title: "maths questions ? ",
     description: "please tell me what is the value of pi ?",
-    responses: [],
+    replies: [],
   },
 ];
 export default function QATab({ course }) {

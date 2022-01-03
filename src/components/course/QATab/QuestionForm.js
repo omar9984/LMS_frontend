@@ -61,7 +61,7 @@ export default function QuestionForm({ course, onUpdate }) {
         </div>
         <div>
           <Button type="submit" variant="outlined">
-            Submit
+            add
           </Button>
         </div>
       </form>
