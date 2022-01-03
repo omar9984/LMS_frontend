@@ -79,7 +79,12 @@ export default function CourseCard({ profile, course, onUpdate }) {
           )}
         />
         {profile.type.toLowerCase() == "instructor" ? (
-          <Button size="small" color="primary" onClick={remove_course}>
+          <Button
+            style={{ display: "none" }}
+            size="small"
+            color="primary"
+            onClick={remove_course}
+          >
             remove
           </Button>
         ) : (
