@@ -9,6 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import QuestionForm from "./QuestionForm";
 import Question from "./Question";
+import axios from "axios";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -34,13 +35,40 @@ const temp_questions = [
     description: "please tell me what is the value of pi ?",
     replies: [],
   },
+  {
+    title: "science questions ? ",
+    description: "please tell me what is the value of boltzman constant ?",
+    replies: [],
+  },
 ];
 export default function QATab({ course }) {
   const classes = useStyles();
   const [questions, setQuestions] = React.useState([]);
-  const fetch_questions = async () => {};
+  const fetch_questions = async () => {
+    if (course.questions.length != 0) {
+      try {
+        let questions_response = await axios.get(
+          "/course/get_many_questions/",
+          {
+            params: {
+              ids: course.questions.join(","),
+            },
+            headers: {
+              Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+            },
+          }
+        );
+        let new_questions = questions_response.data;
+
+        setQuestions(new_questions);
+      } catch (error) {
+        console.log("error is ", error);
+        alert("error occured while fetching the questions");
+      }
+    }
+  };
   useState(() => {
-    setQuestions(temp_questions);
+    fetch_questions();
   }, []);
   return (
     <div>
