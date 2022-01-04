@@ -116,6 +116,13 @@ const Signup = (props) => {
                 required
               />
             </div>
+            <div className="form-group">
+            <p>Please select your type:</p>
+              <input type="radio" id="learner" name="type" value="learner" onChange={onChange}/>
+              <label for="learner">learner</label><br/>
+              <input type="radio" id="instructor" name="type" value="instructor" onChange={onChange}/>
+              <label for="instructor">instructor</label><br/>
+            </div>
             {errMsg && (
               <div className="alert alert-warning">
                 <strong>Oops!</strong> {errMsg}
