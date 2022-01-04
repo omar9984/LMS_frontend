@@ -18,18 +18,24 @@ export default function QuestionForm({ course, onUpdate }) {
     alert("you are submitting" + description);
     let title = document.getElementById("txtTitle").value;
     let description = document.getElementById("txtQuestion").value;
-
-    let r = await axios.post(
-      `/course/add_question/${course._id}`,
-      {
-        description: description,
-      },
-      {
-        headers: {
-          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+    console.log("title , description ", { title, description });
+    try {
+      let r = await axios.post(
+        `/course/add_question/${course._id}`,
+        {
+          title: title,
+          description: description,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      alert("an error prevented adding this question");
+    }
   };
   const classes = useStyles();
   return (
@@ -47,10 +53,12 @@ export default function QuestionForm({ course, onUpdate }) {
             id="txtTitle"
             fullWidth
             placeholder="enter question title"
+            required
           />
         </div>
         <div>
           <TextField
+            required
             className={classes.txtField}
             rows={5}
             id="txtQuestion"
