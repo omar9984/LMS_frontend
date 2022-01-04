@@ -53,7 +53,12 @@ const Account = () => {
       });
   const updateUserProfile = () => {
     axios
-      .post(`/user/profile`, inputs)
+      .put(`/user/profile`,{
+        headers:{
+          Authorization: localStorage.getItem("auth_jwt_token"),
+        },
+        body: inputs
+      })
       .then(() => cancelForm())
       .catch((e) => setErrMsg(`${e.response.data}. Please try it again.`));
   };
