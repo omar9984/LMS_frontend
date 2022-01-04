@@ -26,38 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ActivitiesTab({ people }) {
+export default function ActivitiesTab({}) {
   const classes = useStyles();
-  console.log("activites are is ", people.learners);
-  return (
-    <List className={classes.root}>
-      {people.learners && people.learners.length != 0 ? (
-        people.learners.map((student, index) => {
-          return (
-            <ListItem key={index}>
-              <ListItemAvatar>
-                <Avatar
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={() => {
-                    console.log("todo");
-                  }}
-                  className={classes.orange}
-                >
-                  {student.firstName[0]}
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={student.firstName + " " + student.lastName}
-                secondary="Jan 9, 2014"
-              />
-            </ListItem>
-          );
-        })
-      ) : (
-        <Typography>No people here</Typography>
-      )}
-    </List>
-  );
+  return <Typography>no Activities are here</Typography>;
 }

@@ -7,6 +7,8 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import PeopleTab from "./PeopleTab";
+import QATab from "./QATab/QATab";
+import ActivitiesTab from "./ActivitiesTab";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
 
@@ -21,11 +23,7 @@ function TabPanel(props) {
       aria-labelledby={`nav-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
@@ -144,12 +142,12 @@ export default function Course() {
       </AppBar>
       {/* this is the Activities Tab */}
       <TabPanel value={value} index={0}>
-        Page One
+        <ActivitiesTab />
       </TabPanel>
       {/* this is the QA Tab */}
 
       <TabPanel value={value} index={1}>
-        Page Two
+        <QATab course={course} />
       </TabPanel>
 
       {/* this is the People's Tab */}
