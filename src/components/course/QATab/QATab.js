@@ -118,6 +118,14 @@ export default function QATab({ course }) {
   return (
     <div>
       <div>
+        <h1
+          style={{
+            color: "#24657a",
+            borderBottom: "5px solid blue",
+          }}
+        >
+          + Add Question
+        </h1>
         <form
           style={{
             padding: "10px",
@@ -146,13 +154,21 @@ export default function QATab({ course }) {
             />
           </div>
           <div>
-            <Button type="submit" variant="outlined">
+            <Button type="submit" color="primary" variant="outlined">
               add
             </Button>
           </div>
         </form>
       </div>
       <hr />
+      <h1
+        style={{
+          color: "#24657a",
+          borderBottom: "5px solid blue",
+        }}
+      >
+        Questions
+      </h1>
       <div>
         {questions
           .slice(0)

@@ -131,7 +131,7 @@ export default function Question(props) {
             fullWidth
             onClick={add_reply}
             style={{ height: "3.8em" }}
-            color="secondary"
+            color="primary"
             variant="outlined"
           >
             add
