@@ -22,6 +22,15 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   }
 }));
+function validateYouTubeUrl(urlToParse){
+  if (urlToParse) {
+      var regExp = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+      if (urlToParse.match(regExp)) {
+          return true;
+      }
+  }
+  return false;
+}
 function createURL(attachmentPath){
   if(attachmentPath.startsWith("http")) return attachmentPath;
   return "http://localhost:8080/"+attachmentPath
@@ -40,6 +49,7 @@ export default function ActivitiesTab({courseId}) {
   const [currentItem, setCurrentItem] = useState(initialItem);
   const [selectedFile, setSelectedFile] = useState(null);
   const [txtErrorMessage, settxtErrorMessage] = useState("");
+  const [videoErrorMessage, setvideoErrorMessage] = useState("");
 
   const handleCheck = (event) => {
     setChecked(event.target.checked);
@@ -55,9 +65,19 @@ export default function ActivitiesTab({courseId}) {
       return;
     }
     if(checked){
+      // check Youtube link
+      if(!validateYouTubeUrl(currentItem.attachmentURL)){
+        setvideoErrorMessage("Please add a valid Youtube link");
+      return;
+      }
+
       formData.append("attachmentPath", currentItem.attachmentURL);
     }else{
       if (selectedFile) {
+        if(currentItem.currentFile.split('.').reverse()[0] != "pdf"){
+          settxtErrorMessage("Please add only pdf file");
+          return;
+        }
         formData.append("file", selectedFile);
       }
     }
@@ -75,6 +95,7 @@ export default function ActivitiesTab({courseId}) {
         setCurrentItem(initialItem)
         setSelectedFile(null)
         settxtErrorMessage("");
+        setvideoErrorMessage("");
         fetchActivities();
       })
       .catch((err) => {
@@ -94,6 +115,7 @@ export default function ActivitiesTab({courseId}) {
     })
     .then((res) => {
         settxtErrorMessage("");
+        setvideoErrorMessage("");
         Axios({
           method: "get",
           url: `http://localhost:8080/course/get_many_activities`,
@@ -108,6 +130,8 @@ export default function ActivitiesTab({courseId}) {
         .then((result) =>{
             setActivities(result.data)
             settxtErrorMessage("");
+            setvideoErrorMessage("");
+            setCurrentItem(initialItem)
           })
           .catch((err)=>{
             settxtErrorMessage("Can't get Activities");
@@ -163,6 +187,8 @@ export default function ActivitiesTab({courseId}) {
           placeholder="add url here"
           variant="outlined"
           disabled={!checked}
+          error={videoErrorMessage !== ""}
+          helperText={videoErrorMessage !== "" ? videoErrorMessage : " "}
           onChange={(e) => setCurrentItem({ ...currentItem, attachmentURL: e.target.value })}
         />
       </Grid>
