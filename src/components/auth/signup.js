@@ -8,13 +8,13 @@ const Signup = (props) => {
   const [errMsg, setErrorMsg] = useState("");
   const options = {
     initialValues: {
-      firstName: "Islam",
-      lastName: "Ahmed",
-      email: "example@test.com",
+      firstName: "",
+      lastName: "",
+      email: "",
       password: "",
       passwordConfirm: "",
-      birthdate: "1999-01-01",
-      type: "learner",
+      birthdate: "",
+      type: "",
     },
     callback: () => {
       if (inputs.password.length < 8) {

@@ -100,9 +100,7 @@ export default function AdminHome() {
   const toggleUser = async (id) => {
     let new_type = "";
     let new_users = users.map((user) => {
-      // console.log(user._id, " == ", id, " = ", user._id == id);
       if (user._id == id) {
-        // console.log("hi turning this");
         // send the backend request
         new_type = user.type == "instructor" ? "learner" : "instructor";
 
@@ -138,7 +136,8 @@ export default function AdminHome() {
   };
   return (
     <div>
-      <h1>this will be the admin home</h1>
+      <h3 style={{"text-align":"center", color:"CornflowerBlue"}}>Admin profile</h3>
+      {profile && <h3 style={{"text-align":"right", color:"CornflowerBlue"}}>hello {profile.firstName}</h3>}
       <Grid container spacing={3}>
         <Grid
           style={{
