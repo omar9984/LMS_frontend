@@ -39,7 +39,7 @@ export default function Home() {
         },
       })
       .then((r) => {
-        console.log("porofile is ", r.data);
+        console.log("profile is ", r.data);
         setProfile(r.data);
         setStatus(STATUS.CONNECTED);
       })
