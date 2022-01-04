@@ -68,8 +68,23 @@ function Header(props) {
           >
             <IconButton />
           </MenuIcon> */}
-          <Typography variant="h6" className={classes.title}>
-            LMS
+          <Typography
+            style={{ cursor: "pointer" }}
+            variant="h6"
+            className={classes.title}
+          >
+            <Route
+              render={({ history }) => (
+                <p
+                  color="inherit"
+                  onClick={() => {
+                    history.push("/");
+                  }}
+                >
+                  LMS
+                </p>
+              )}
+            />
           </Typography>
 
           {props.authenticated ? (
@@ -81,7 +96,7 @@ function Header(props) {
                 onClick={handleMenu}
                 className={classes.orange}
               >
-                {"Islam"[0]}
+                {"I"[0]}
               </Avatar>
               <Menu
                 id="menu-appbar"

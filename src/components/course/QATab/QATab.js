@@ -103,7 +103,12 @@ export default function QATab({ course }) {
       );
       let new_question = r.data;
       console.log(" QuestionForm new Question is ", new_question);
+      console.log(" [...questions, new_question] ", [
+        ...questions,
+        new_question,
+      ]);
       setQuestions([...questions, new_question]);
+      // fetch_questions();
       document.getElementById("txtTitle").value = "";
       document.getElementById("txtQuestion").value = "";
     } catch (error) {
@@ -113,6 +118,7 @@ export default function QATab({ course }) {
   };
 
   useEffect(() => {
+    console.log("QTAB in useEffect now");
     fetch_questions();
   }, []);
   return (

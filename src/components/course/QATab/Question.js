@@ -40,7 +40,7 @@ export default function Question(props) {
   const fetch_question = async () => {
     let question_response = await axios.get("/course/get_many_questions/", {
       params: {
-        ids: question._id,
+        ids: props.question._id,
       },
       headers: {
         Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
@@ -69,8 +69,14 @@ export default function Question(props) {
     console.log("reply is ", reply);
   };
   useEffect(() => {
-    // fetch_question();
+    console.log("fetching  the question for the first time ", question._id);
+
+    fetch_question();
   }, []);
+  console.log("rerendering the question ", question._id);
+  if (question._id != props.question._id) {
+    fetch_question();
+  }
   return (
     <Grid
       style={{
