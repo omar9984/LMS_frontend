@@ -114,6 +114,7 @@ export default function ActivitiesTab({courseId}) {
       data: JSON.stringify({}),
     })
     .then((res) => {
+        if(res.data.syllabus.length == 0)return;
         settxtErrorMessage("");
         setvideoErrorMessage("");
         Axios({
