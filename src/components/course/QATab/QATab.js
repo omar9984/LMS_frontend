@@ -112,7 +112,7 @@ export default function QATab({ course }) {
     }
   };
 
-  useState(() => {
+  useEffect(() => {
     fetch_questions();
   }, []);
   return (

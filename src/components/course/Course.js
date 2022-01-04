@@ -142,12 +142,12 @@ export default function Course() {
       </AppBar>
       {/* this is the Activities Tab */}
       <TabPanel value={value} index={0}>
-        <ActivitiesTab courseId={id}/>
+        <ActivitiesTab courseId={id} />
       </TabPanel>
       {/* this is the QA Tab */}
 
       <TabPanel value={value} index={1}>
-        <QATab course={QA} />
+        <QATab course={course} />
       </TabPanel>
 
       {/* this is the People's Tab */}
