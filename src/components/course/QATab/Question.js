@@ -35,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
 export default function Question({ question }) {
   const classes = useStyles();
   useEffect(() => {
-    console.log("question is ", question);
+    // console.log("question is ", question);
   }, []);
   return (
     <Grid
       style={{
         boxShadow: "0px 0px 3px 3px rgba(12,59,255,0.99)",
-
+        borderRadius: "8px",
         padding: "10px",
         marginTop: "10px",
       }}

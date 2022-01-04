@@ -50,7 +50,7 @@ export default function PeopleTab({ people }) {
               </ListItemAvatar>
               <ListItemText
                 primary={student.firstName + " " + student.lastName}
-                secondary="Jan 9, 2014"
+                secondary={student.email}
               />
             </ListItem>
           );
