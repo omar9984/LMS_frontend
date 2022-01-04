@@ -8,13 +8,13 @@ const Signup = (props) => {
   const [errMsg, setErrorMsg] = useState("");
   const options = {
     initialValues: {
-      firstName: "Islam",
-      lastName: "Ahmed",
-      email: "example@test.com",
+      firstName: "",
+      lastName: "",
+      email: "",
       password: "",
       passwordConfirm: "",
-      birthdate: "1999-01-01",
-      type: "learner",
+      birthdate: "",
+      type: "",
     },
     callback: () => {
       if (inputs.password.length < 8) {
@@ -115,6 +115,13 @@ const Signup = (props) => {
                 placeholder="your password again"
                 required
               />
+            </div>
+            <div className="form-group">
+            <p>Please select your type:</p>
+              <input type="radio" id="learner" name="type" value="learner" onChange={onChange}/>
+              <label for="learner">learner</label><br/>
+              <input type="radio" id="instructor" name="type" value="instructor" onChange={onChange}/>
+              <label for="instructor">instructor</label><br/>
             </div>
             {errMsg && (
               <div className="alert alert-warning">

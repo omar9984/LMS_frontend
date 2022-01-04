@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import PeopleTab from "./PeopleTab";
 import QATab from "./QATab/QATab";
-import ActivitiesTab from "./ActivitiesTab";
+import ActivitiesTab from "./ActivitiesTab.jsx";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
 
@@ -75,8 +75,8 @@ export default function Course() {
 
   const [course, setCourse] = React.useState({});
   const [people, setPeople] = React.useState({ learners: [] });
-  const [QA, setQA] = React.useState({});
-  const [activities, setActivities] = React.useState({});
+  const [QA, setQA] = React.useState([]);
+  const [activities, setActivities] = React.useState([]);
 
   useEffect(() => {
     (async () => {
@@ -142,12 +142,12 @@ export default function Course() {
       </AppBar>
       {/* this is the Activities Tab */}
       <TabPanel value={value} index={0}>
-        <ActivitiesTab />
+        <ActivitiesTab courseId={id}/>
       </TabPanel>
       {/* this is the QA Tab */}
 
       <TabPanel value={value} index={1}>
-        <QATab course={course} />
+        <QATab course={QA} />
       </TabPanel>
 
       {/* this is the People's Tab */}

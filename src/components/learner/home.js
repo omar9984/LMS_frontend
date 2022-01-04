@@ -141,8 +141,8 @@ export default function LearnerHome() {
 
   return (
     <div>
-      <h1>instructor</h1>
-      {profile && <h1>hello {profile.firstName}</h1>}
+      <h3 style={{"text-align":"center", color:"CornflowerBlue"}}>Learner profile</h3>
+      {profile && <h3 style={{"text-align":"right", color:"CornflowerBlue"}}>hello {profile.firstName}</h3>}
       <div className={classes.root}>
         <Grid container spacing={3}>
           {courses.map((course, index) => {
