@@ -11,6 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import { Grade } from "@material-ui/icons";
 import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,10 +33,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Question({ question }) {
+export default function Question(props) {
   const classes = useStyles();
+  const [question, setQuestion] = React.useState(props.question);
+
+  const fetch_question = async () => {
+    let question_response = await axios.get("/course/get_many_questions/", {
+      params: {
+        ids: question._id,
+      },
+      headers: {
+        Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+      },
+    });
+    let new_question = question_response.data[0];
+    // console.log("fetched question is ", new_question);
+    setQuestion(new_question);
+  };
+  const add_reply = async (e) => {
+    e.preventDefault();
+    let reply = document.getElementById("txtReply").value;
+
+    let r = await axios.post(
+      `/course/add_reply/${question._id}`,
+      {
+        reply: reply,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+        },
+      }
+    );
+    fetch_question();
+    console.log("reply is ", reply);
+  };
   useEffect(() => {
-    // console.log("question is ", question);
+    // fetch_question();
   }, []);
   return (
     <Grid
@@ -77,9 +111,9 @@ export default function Question({ question }) {
         <Grid xs={12} md={8}>
           <TextField
             fullWidth
-            id="txtResponse"
-            label="response"
-            placeholder="enter your response"
+            id="txtReply"
+            label="reply"
+            placeholder="enter your reply"
             variant="filled"
           />
         </Grid>
@@ -95,9 +129,7 @@ export default function Question({ question }) {
         >
           <Button
             fullWidth
-            onClick={() => {
-              console.log("add reply");
-            }}
+            onClick={add_reply}
             style={{ height: "3.8em" }}
             color="secondary"
             variant="outlined"

@@ -117,13 +117,6 @@ export default function QATab({ course }) {
   }, []);
   return (
     <div>
-      {/* <QuestionForm
-        onUpdate={(new_question) => {
-          console.log("QTab new question is added", new_question);
-          setQuestions([new_question, ...questions]);
-        }}
-        course={course}
-      /> */}
       <div>
         <form
           style={{
