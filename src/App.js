@@ -12,7 +12,12 @@ import Account from "./components/account";
 import Signin from "./components/auth/signin";
 import Signup from "./components/auth/signup";
 import Signout from "./components/auth/signout";
+import Course from "./components/course/Course";
 import RequireAuth from "./components/auth/require_auth";
+import AdminHome from "./components/admin/home";
+import LearnerHome from "./components/learner/home";
+import InstructorHome from "./components/instructor/home";
+import LandingPage from "./components/general/home";
 import reducers from "./reducers";
 import { AUTH_USER } from "./actions/types";
 
@@ -37,6 +42,11 @@ ReactDOM.render(
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
           <Route path="/signout" component={Signout} />
+          <Route path="/course/:id" component={Course} />
+          <Route path="/lms" component={LandingPage} />
+          <Route path="/learner/home" component={LearnerHome} />
+          <Route path="/instructor/home" component={InstructorHome} />
+          <Route path="/admin/home" component={AdminHome} />
         </Switch>
       </App>
     </HashRouter>

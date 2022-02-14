@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import RestoreIcon from "@material-ui/icons/Restore";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import MediaCard from "./cards/MediaCard";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
+import CircularLoading from "./common/CircularLoading";
+import LandingPage from "./general/home";
+import InstructorHome from "./instructor/home";
+import LearnerHome from "./learner/home";
+import AdminHome from "./admin/home";
+const STATUS = {
+  CONNECTED: 1,
+  LOADING: 2,
+  DISCONNECTED: 3,
+};
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -20,11 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+let tempCourses = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 export default function Home() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [profile, setProfile] = React.useState({});
-  const [courses, setcourses] = React.useState([]);
+  const [courses, setCourses] = React.useState([]);
+  const [status, setStatus] = React.useState(STATUS.LOADING);
   useEffect(() => {
     axios
       .get(`/user/profile`, {
@@ -33,28 +39,31 @@ export default function Home() {
         },
       })
       .then((r) => {
+        console.log("profile is ", r.data);
         setProfile(r.data);
+        setStatus(STATUS.CONNECTED);
+      })
+      .catch((err) => {
+        console.log("error is ", err);
+        setStatus(STATUS.DISCONNECTED);
       });
+    setCourses(tempCourses);
   }, []);
-  return (
-    <div>
-      {profile && <h1>hello {profile.firstName}</h1>}
-      <div className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs={6} sm={3}>
-            <MediaCard />
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <MediaCard />
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <MediaCard />
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <MediaCard />
-          </Grid>
-        </Grid>
-      </div>
-    </div>
-  );
+  switch (status) {
+    case STATUS.CONNECTED:
+      switch (profile.type) {
+        case "learner":
+          return <Redirect to="/learner/home" />;
+        case "instructor":
+          return <Redirect to="/instructor/home" />;
+        case "admin":
+          return <Redirect to="/admin/home" />;
+        default:
+          return "<h1>unknown user type database compromised </h1>";
+      }
+    case STATUS.DISCONNECTED:
+      return <Redirect to="/lms" />;
+    default:
+      return <CircularLoading />;
+  }
 }

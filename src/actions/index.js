@@ -34,13 +34,13 @@ export function signUserIn(data) {
 export function signUserUp(userObj) {
   return function (dispatch) {
     // Submit email/password to server
-
+    console.log(userObj);
     axios
       .post(`/signup`, userObj)
       .then((res) => {
         dispatch({ type: AUTH_USER });
-        localStorage.setItem("auth_jwt_token", res.data.token);
-        window.location = "/#account";
+        localStorage.setItem("auth_jwt_token", "Bearer " + res.data.token);
+        window.location = "/";
         axios.defaults.headers.common["Authorization"] =
           localStorage.getItem("auth_jwt_token");
       })

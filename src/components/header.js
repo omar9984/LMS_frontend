@@ -60,16 +60,31 @@ function Header(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <MenuIcon
+          {/* <MenuIcon
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
           >
             <IconButton />
-          </MenuIcon>
-          <Typography variant="h6" className={classes.title}>
-            LMS
+          </MenuIcon> */}
+          <Typography
+            style={{ cursor: "pointer" }}
+            variant="h6"
+            className={classes.title}
+          >
+            <Route
+              render={({ history }) => (
+                <p
+                  color="inherit"
+                  onClick={() => {
+                    history.push("/");
+                  }}
+                >
+                  LMS
+                </p>
+              )}
+            />
           </Typography>
 
           {props.authenticated ? (
@@ -81,7 +96,7 @@ function Header(props) {
                 onClick={handleMenu}
                 className={classes.orange}
               >
-                {"Islam"[0]}
+                {"I"[0]}
               </Avatar>
               <Menu
                 id="menu-appbar"
@@ -237,6 +252,7 @@ function Header(props) {
 //   }
 
 function mapStateToProps({ auth }) {
+  // console.log("auth is ", auth);
   return {
     authenticated: auth.authenticated,
   };

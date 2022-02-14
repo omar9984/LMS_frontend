@@ -26,24 +26,7 @@ $ npm run start // this will run the files in docs, this behavior is exactly the
 | mongoose: ^4.7.4
 | morgan: ^1.7.0
 
-# Some screenshots
 
-User visit public and Home page
-![User visit public and Home page](http://i.imgur.com/ORCGHHY.png)
 
-User can sign in or sign up
-![User can sign in or sign up](http://i.imgur.com/rrmbU5I.png)
 
-After signing in user can go to account page and make request to token-protected API endpoint
-![After signing in user can go to account page](http://i.imgur.com/FzLB51u.png)
 
-## BUGs or comments
-[Create new Issues](https://github.com/amazingandyyy/mern/issues)
-
-## Author
-[Amazingandyyy](amazingandyyy.github.io)
-- Feel free to find me on _[GitHub](https://github.com/amazingandyyy)_ and _[LiveCoding](https://www.livecoding.tv/amazingandyyy/)_
-- or visit my _[page](http://amazingandyyy.github.io/)_
-
-### License
-[MIT](https://github.com/amazingandyyy/eventbrite-api/blob/master/LICENSE)
