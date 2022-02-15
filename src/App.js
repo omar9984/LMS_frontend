@@ -19,8 +19,8 @@ import LearnerHome from "./components/learner/home";
 import InstructorHome from "./components/instructor/home";
 import LandingPage from "./components/general/home";
 import reducers from "./reducers";
-import { AUTH_USER } from "./actions/types";
-
+import { AUTH_USER, GET_USER_PROFILE } from "./actions/types";
+import axios from "axios";
 import "../style/style.scss";
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
@@ -29,7 +29,23 @@ const token = localStorage.getItem("auth_jwt_token");
 
 // if we have a token, consider the user to be signed in
 if (token) {
+
+  axios
+      .get(`/user/profile`, {
+        headers: {
+          Authorization: localStorage.getItem("auth_jwt_token"), //the token is a variable which holds the token
+        },
+      })
+      .then((r) => {
+        store.dispatch({ type: GET_USER_PROFILE, payload: r.data });
+        console.log("profile is ", r.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
   store.dispatch({ type: AUTH_USER });
+
+
 }
 ReactDOM.render(
   <Provider store={store}>
@@ -42,11 +58,11 @@ ReactDOM.render(
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
           <Route path="/signout" component={Signout} />
-          <Route path="/course/:id" component={Course} />
+          <Route path="/course/:id" component={RequireAuth(Course)} />
           <Route path="/lms" component={LandingPage} />
-          <Route path="/learner/home" component={LearnerHome} />
-          <Route path="/instructor/home" component={InstructorHome} />
-          <Route path="/admin/home" component={AdminHome} />
+          <Route path="/learner/home" component={RequireAuth(LearnerHome)} />
+          <Route path="/instructor/home" component={RequireAuth(InstructorHome)} />
+          <Route path="/admin/home" component={RequireAuth(AdminHome)} />
         </Switch>
       </App>
     </HashRouter>

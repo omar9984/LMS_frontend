@@ -7,6 +7,10 @@ import LandingPage from "./general/home";
 import InstructorHome from "./instructor/home";
 import LearnerHome from "./learner/home";
 import AdminHome from "./admin/home";
+import { newProfile } from "../actions";
+import { connect } from "react-redux";
+
+
 const STATUS = {
   CONNECTED: 1,
   LOADING: 2,
@@ -25,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let tempCourses = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
-export default function Home() {
+const Home = (props) =>  {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [profile, setProfile] = React.useState({});
@@ -39,8 +43,10 @@ export default function Home() {
         },
       })
       .then((r) => {
+
         console.log("profile is ", r.data);
         setProfile(r.data);
+        props.newProfile(r.data);
         setStatus(STATUS.CONNECTED);
       })
       .catch((err) => {
@@ -67,3 +73,4 @@ export default function Home() {
       return <CircularLoading />;
   }
 }
+export default connect(null, { newProfile })(Home);
